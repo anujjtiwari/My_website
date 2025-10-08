@@ -1,0 +1,6 @@
+# Ignore executables
+*.exe
+*.msi
+*.zip
+*.tar
+*.7z
