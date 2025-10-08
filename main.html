@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anuj Tiwari - Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .section-title {
+            color: #4ade80; /* A vibrant green */
+        }
+        .card {
+            background-color: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 0 25px rgba(74, 222, 128, 0.4), 0 10px 30px rgba(74, 222, 128, 0.2);
+            border-color: rgba(74, 222, 128, 0.5);
+        }
+        nav a {
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #4ade80;
+        }
+        .skill-tag {
+            background-color: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            color: #4ade80;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4ade80;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #369a62;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2.5rem;
+            padding-left: 5rem;
+        }
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 2rem;
+            top: 0.5rem;
+            width: 2px;
+            height: 100%;
+            background-color: rgba(74, 222, 128, 0.3);
+        }
+         .timeline-logo-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4rem;
+            height: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a1a1a;
+            border-radius: 50%;
+            border: 2px solid rgba(74, 222, 128, 0.3);
+        }
+        .timeline-logo {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+            filter: grayscale(0%) brightness(100%);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <canvas id="bg-canvas"></canvas>
+
+    <header class="fixed top-0 left-0 w-full z-10 bg-black/50 backdrop-blur-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-green-400 font-orbitron">AT</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="text-lg">About</a>
+                <a href="#projects" class="text-lg">Projects</a>
+                <a href="#experience" class="text-lg">Experience</a>
+                <a href="#skills" class="text-lg">Skills</a>
+                <a href="#certifications" class="text-lg">Certifications</a>
+                <a href="#contact" class="text-lg">Contact</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+         <div id="mobile-menu" class="hidden md:hidden bg-black/70">
+            <a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-800">About</a>
+            <a href="#projects" class="block py-2 px-4 text-sm hover:bg-gray-800">Projects</a>
+            <a href="#experience" class="block py-2 px-4 text-sm hover:bg-gray-800">Experience</a>
+            <a href="#skills" class="block py-2 px-4 text-sm hover:bg-gray-800">Skills</a>
+            <a href="#certifications" class="block py-2 px-4 text-sm hover:bg-gray-800">Certifications</a>
+            <a href="#contact" class="block py-2 px-4 text-sm hover:bg-gray-800">Contact</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 pt-24 relative z-0">
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-5xl md:text-7xl font-bold mb-4 font-orbitron">Anuj Tiwari</h1>
+                <h2 class="text-2xl md:text-3xl text-green-400 mb-6 font-orbitron">Research Student @ IIT Gandhinagar</h2>
+                <p class="text-lg text-gray-300 max-w-xl mx-auto md:mx-0">Exploring Quantum Machine Learning and Cybersecurity. Specializing in ML and defense applications.</p>
+                 <div class="mt-8 flex justify-center md:justify-start space-x-4">
+                    <a href="https://www.linkedin.com/in/anuj-tiwari-4130a3217/" target="_blank" class="text-green-400 hover:text-white transition-colors duration-300">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
+                    </a>
+                    <a href="https://github.com/anujjtiwari" target="_blank" class="text-green-400 hover:text-white transition-colors duration-300">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.578.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"/></svg>
+                    </a>
+                </div>
+            </div>
+             <div class="md:w-1/2 flex justify-center">
+                <div class="relative w-64 h-64 md:w-80 md:h-80">
+                    <div class="absolute inset-0 border-2 border-green-400 rounded-full animate-pulse"></div>
+                    <img src="D:/Programming/MyWebsite/imgs/me.jpeg" alt="Anuj Tiwari" class="w-full h-full object-cover rounded-full p-2">
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 section-title font-orbitron">&lt;About Me /&gt;</h2>
+            <div class="card p-8 rounded-lg max-w-4xl mx-auto">
+                <p class="text-lg leading-relaxed">
+                    I am a research student at IIT Gandhinagar, focusing on Quantum Machine Learning and its applications in Cybersecurity. My background is in AI and defense applications, with projects spanning UAV trajectory prediction, object detection, and ML/DL classification. As a GATE CSE and DA qualified professional, I possess a strong foundation in computer science. My research includes a published paper on ML algorithms and an upcoming publication on UAV path prediction. I'm passionate about leveraging cutting-edge technology to solve complex real-world problems.
+                </p>
+            </div>
+        </section>
+        
+        <!-- Projects Section -->
+        <section id="projects" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 section-title font-orbitron">&lt;Projects /&gt;</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card p-6 rounded-lg flex flex-col">
+                    <h3 class="text-xl font-bold text-green-400 mb-2 font-orbitron">LoRa Enabled Secure Communication</h3>
+                    <p class="text-gray-400 text-sm mb-4">IIT (BHU) Varanasi | TII Funded</p>
+                    <p class="flex-grow">Developed a secure, long-range mesh network using LoRa and Heltec ESP32 modules with distance-vector routing. Configured Raspberry Pi nodes and a Chirpstack gateway for data aggregation.</p>
+                </div>
+                <div class="card p-6 rounded-lg flex flex-col">
+                    <h3 class="text-xl font-bold text-green-400 mb-2 font-orbitron">Trajectory Prediction for UAVs</h3>
+                    <p class="text-gray-400 text-sm mb-4">SERB Project | Research Paper</p>
+                    <p class="flex-grow">Utilized LSTM and NLP on GPS data from VTO Forensics Labs (USA) to map and predict UAV flight paths using RNN methodologies and Google Earth for real-time situational awareness.</p>
+                </div>
+                <div class="card p-6 rounded-lg flex flex-col">
+                    <h3 class="text-xl font-bold text-green-400 mb-2 font-orbitron">AlumnXConnect with Chatbot</h3>
+                    <p class="text-gray-400 text-sm mb-4">Hackathon Winner | IIIM, Jaipur</p>
+                    <p class="flex-grow">Developed an alumni tracking system with an AI chatbot (Chakra UI, MongoDB, React.js, NLP) to connect alumni and students with their colleges.</p>
+                </div>
+                <div class="card p-6 rounded-lg flex flex-col">
+                    <h3 class="text-xl font-bold text-green-400 mb-2 font-orbitron">AI-Powered Conversation Designer</h3>
+                     <p class="text-gray-400 text-sm mb-4">Flipkart</p>
+                    <p class="flex-grow">Collaborated with Google's Conversation Design to build a sophisticated conversational agent using NLP, ML (BERT, XLNet), and Rasa for dynamic intent recognition.</p>
+                </div>
+                <div class="card p-6 rounded-lg flex flex-col">
+                    <h3 class="text-xl font-bold text-green-400 mb-2 font-orbitron">Real-Time Gun Detection</h3>
+                    <p class="text-gray-400 text-sm mb-4">GECA, India</p>
+                    <p class="flex-grow">Created a system using Raspberry Pi, rotors, and YOLO to detect individuals carrying guns from live video feeds for autonomous surveillance.</p>
+                </div>
+                 <div class="card p-6 rounded-lg flex flex-col">
+                    <h3 class="text-xl font-bold text-green-400 mb-2 font-orbitron">AI for Schizophrenia Treatment</h3>
+                     <p class="text-gray-400 text-sm mb-4">IIIT Hyderabad, India</p>
+                    <p class="flex-grow">In collaboration with psychiatrists, developed a deep learning model to analyze EEG data for early detection and prediction of schizophrenia onset.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Experience Section -->
+        <section id="experience" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 section-title font-orbitron">&lt;Experience & Education /&gt;</h2>
+            <div class="max-w-3xl mx-auto">
+                <div class="relative">
+                    <!-- IIT Gandhinagar -->
+                    <div class="timeline-item">
+                        <div class="timeline-logo-container">
+                            <img src="imgs\iitgn_logo.png" alt="IIT Gandhinagar Logo" class="timeline-logo">
+                        </div>
+                        <p class="text-sm text-green-400">Oct 2025 - 2027</p>
+                        <h3 class="text-xl font-bold font-orbitron">Research Student</h3>
+                        <p class="font-semibold text-gray-300">IIT Gandhinagar</p>
+                        <p class="mt-2 text-gray-400">Working on Quantum Machine Learning and its applications in Cybersecurity.</p>
+                    </div>
+                    <!-- IIT BHU -->
+                    <div class="timeline-item">
+                        <div class="timeline-logo-container">
+                             <img src="imgs\iitbhu_logo.png" alt="IIT BHU Logo" class="timeline-logo">
+                        </div>
+                        <p class="text-sm text-green-400">Apr 2025 - May 2025</p>
+                        <h3 class="text-xl font-bold font-orbitron">Associate Researcher</h3>
+                        <p class="font-semibold text-gray-300">IIT (BHU), Varanasi</p>
+                        <p class="mt-2 text-gray-400">Worked on a TII-funded project for LoRa-enabled secure long-range communication networks.</p>
+                    </div>
+                     <!-- CodeFeast -->
+                    <div class="timeline-item">
+                        <div class="timeline-logo-container">
+                            <span class="text-green-400 font-bold text-xl">CF</span>
+                        </div>
+                        <p class="text-sm text-green-400">June 2024 - Sep 2025</p>
+                        <h3 class="text-xl font-bold font-orbitron">Data Science Mentor</h3>
+                        <p class="font-semibold text-gray-300">CodeFeast</p>
+                    </div>
+                    <!-- GEC Ajmer -->
+                    <div class="timeline-item">
+                        <div class="timeline-logo-container">
+                           <img src="imgs/geca_logo.png" alt="GEC Ajmer Logo" class="timeline-logo" style="filter: brightness(1.5) contrast(1.2);">
+                        </div>
+                        <p class="text-sm text-green-400">2020 - 2024</p>
+                        <h3 class="text-xl font-bold font-orbitron">B.Tech, Computer Science & Engineering</h3>
+                        <p class="font-semibold text-gray-300">Engineering College of Ajmer</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 section-title font-orbitron">&lt;Skills /&gt;</h2>
+            <div class="card p-8 rounded-lg max-w-5xl mx-auto">
+                 <div class="mb-6">
+                    <h3 class="text-xl font-bold text-green-400 mb-4 font-orbitron">Programming & Scripting</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Python</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Java</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">HTML</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">CSS</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Kotlin</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Linux (.bash)</span>
+                    </div>
+                </div>
+                 <div class="mb-6">
+                    <h3 class="text-xl font-bold text-green-400 mb-4 font-orbitron">Frameworks & Libraries</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Tensorflow</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Keras</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">PyTorch</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Sci-Kit Learn</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Yolo</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Numpy</span>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-green-400 mb-4 font-orbitron">Cyber Security Tools</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">MsfExploiters</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Nmap</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Wifite</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Airmon-ng</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">WireShark</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Hydra</span>
+                        <span class="skill-tag px-3 py-1 rounded-full text-sm">Sherlock</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-green-400 mb-4 font-orbitron">Other Tools & Technologies</h3>
+                    <div class="flex flex-wrap gap-2">
+                         <span class="skill-tag px-3 py-1 rounded-full text-sm">Heroku</span>
+                         <span class="skill-tag px-3 py-1 rounded-full text-sm">Data Structures & Algorithms</span>
+                         <span class="skill-tag px-3 py-1 rounded-full text-sm">OOP</span>
+                         <span class="skill-tag px-3 py-1 rounded-full text-sm">LATEX</span>
+                         <span class="skill-tag px-3 py-1 rounded-full text-sm">MySQL</span>
+                         <span class="skill-tag px-3 py-1 rounded-full text-sm">Unity</span>
+                         <span class="skill-tag px-3 py-1 rounded-full text-sm">Arduino</span>
+                         <span class="skill-tag px-3 py-1 rounded-full text-sm">Raspberry Pi</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications & Publications Section -->
+        <section id="certifications" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 section-title font-orbitron">&lt;Certifications & Publications /&gt;</h2>
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-green-400 mb-4 font-orbitron">Certifications</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>
+    <a href="https://www.coursera.org/account/accomplishments/certificate/SXMDMZSTEVG6/" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       Data Analytics with AWS - Amazon
+    </a>
+</li>
+                
+   <li><a href="https://coursera.org/share/7967700d43ecadaff8eb0ec6bdb7078a" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       Unsupervised Learning & RL - Stanford University
+    </a>
+</li>
+   <li><a href="https://drive.google.com/file/d/1SqDhJUddhnPJJmJIpbloYYzmFB5fbbay/view?usp=share_link" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       Programming in Java - IIT Kharagpur
+    </a>
+</li>
+   <li><a href="https://drive.google.com/file/d/1K-wAM5BHk44Gsk1Jx_ycX1bC5Qzbh5vN/view?usp=sharing" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       Python for Data Science - IIT Madras
+    </a>
+      <li><a href="https://drive.google.com/file/d/1K-wAM5BHk44Gsk1Jx_ycX1bC5Qzbh5vN/view?usp=sharing" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       DSA Using Python - IIT Madras
+       </a>
+    </li>
+   <li><a href="https://www.sololearn.com/certificates/CC-WEL1LCOJ" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+        Machine Learning - SoloLearn
+    </a>
+</li>
+   <li><a href="https://drive.google.com/file/d/1SqDhJUddhnPJJmJIpbloYYzmFB5fbbay/view?usp=share_link" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       Web Development - SoloLearn
+    </a>
+</li>
+   <li><a href="https://www.sololearn.com/certificates/CC-WTSUNHIK" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       JavaScript - SoloLearn
+    </a>
+</li>
+   <li><a href="https://www.hackerrank.com/certificates/3e32de21943d" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       5 Star Gold in Python and Java - HackerRank
+    </a>
+    
+</li>
+   <li><a href="https://www.udemy.com/certificate/UC-8c37fe99-33c9-49a8-91e6-3a22d56acb2d/" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       Complete MySQL Certificate - UDEMY
+    </a>
+</li>
+   <li><a href="https://www.udemy.com/certificate/UC-a9b62bc4-69c9-40d8-a297-0b45af2ca330/" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       Linux Erudite - UDEMY
+    </a>
+</li>
+   <li><a href="https://drive.google.com/file/d/1DFnuYR8PiDrCpTRqSHitH2gxTAyKr9lf/view?usp=sharing" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       C ++ Certification - GECA Ajmer
+    </a>
+</li>
+                    </ul>
+                </div>
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-green-400 mb-4 font-orbitron">Publications & Reports</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                          <li><a href="https://docs.google.com/document/d/1W8F7aGUST3p3E71p3ldzdqXtubEgMgOFekJJ_K6XtSY/edit?usp=sharing" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="relative inline-block py-1 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-0 after:bg-green-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full hover:after:left-0">
+       Comparative Analysis of Unsupervised ML Algorithms with Hyperparameter Tuning for Accuracy Enhancement" (IEEE format)
+    </a>
+                        <li>Upcoming: "Arrow Trace" - Investigating UAV Path Prediction and Mathematics, to be featured in a prominent science journal.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 text-center">
+            <h2 class="text-4xl font-bold text-center mb-6 section-title font-orbitron">&lt;Get In Touch /&gt;</h2>
+            <p class="max-w-2xl mx-auto mb-8 text-lg">I'm always open to new opportunities and collaborations. Feel free to reach out to me.</p>
+            <a href="mailto:anujtiwari1098@gmail.com" class="inline-block bg-green-500 text-black font-bold py-3 px-8 rounded-lg hover:bg-green-400 transition-colors duration-300 text-lg">
+                anujtiwari1098@gmail.com
+            </a>
+             <div class="mt-12 flex justify-center space-x-6">
+                <a href="https://www.linkedin.com/in/anuj-tiwari-4130a3217/" target="_blank" class="text-green-400 hover:text-white transition-colors duration-300">
+                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
+                </a>
+                <a href="https://github.com/AnujTiwari1098" target="_blank" class="text-green-400 hover:text-white transition-colors duration-300">
+                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.578.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"/></svg>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-6 text-gray-500 border-t border-gray-800">
+        <p>&copy; 2025 Anuj Tiwari. Designed with passion.</p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                mobileMenu.classList.add('hidden'); // Close mobile menu on click
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Three.js background animation
+        let scene, camera, renderer, stars;
+        let mouseX = 0, mouseY = 0;
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+            camera.position.z = 1;
+            camera.rotation.x = Math.PI / 2;
+
+            renderer = new THREE.WebGLRenderer({
+                canvas: document.querySelector('#bg-canvas'),
+                alpha: true
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            
+            const starGeo = new THREE.BufferGeometry();
+            const starCount = 6000;
+            const positions = new Float32Array(starCount * 3);
+            for (let i = 0; i < starCount * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 600;
+            }
+            starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            let sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
+            let starMaterial = new THREE.PointsMaterial({
+                color: 0x4ade80, // Green color
+                size: 0.7,
+                map: sprite,
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+            });
+
+            stars = new THREE.Points(starGeo, starMaterial);
+            scene.add(stars);
+
+            window.addEventListener('resize', onWindowResize, false);
+            document.addEventListener('mousemove', onMouseMove, false);
+
+            animate();
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onMouseMove(event) {
+            mouseX = event.clientX - window.innerWidth / 2;
+            mouseY = event.clientY - window.innerHeight / 2;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            stars.rotation.y += 0.0002;
+
+            // Mouse interaction
+            if (camera) {
+                camera.position.y += (-mouseY * 0.00005 - camera.position.y) * 0.05;
+                camera.position.x += (mouseX * 0.00005 - camera.position.x) * 0.05;
+                camera.lookAt(scene.position);
+            }
+            
+            renderer.render(scene, camera);
+        }
+
+        init();
+    </script>
+</body>
+</html>
+
